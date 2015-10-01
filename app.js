@@ -1,11 +1,6 @@
 //var adventure = require('./adventure');
 
-var yCoord = 0;
-var xCoord = 0;
-
-// Initializing the corrdinates of the target cell 
-var endX = 2;
-var endY = 2;
+// hello
 
 //Adding a function to replace the winning cell with a picture of dead Abe Simpson
 var killAbe = function () {
