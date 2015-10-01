@@ -2,28 +2,14 @@
 	height: 100px;
 	width: 100px;
 	color: purple;
-	border-style: solid;
-	border-color: purple;
+	/*border-style: solid;*/
+	/*border-color: purple;*/
 	overflow: hidden;
 	align-content: center;
+	table-layout:fixed;
+	white-space: nowrap;
 }
-.ttt-grid {
-	left: auto
-	right: auto;
-}
-#up {
-	position: relative;
-	top: 0;
-}
-#down {
-    position: relative;
-    bottom: 0;
-}
-#left {
-    position: relative;
-    left: 0;
-}
-#right {
-    position: relative;
-    left: 0;
+
+.burns{
+	background-image: url("burns.jpg");
 }
