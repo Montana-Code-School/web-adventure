@@ -20,9 +20,55 @@
   			<button onclick="movLeft();" id="left" type="submit" class="btn btn-warning">Left</button>
   			<button onclick="movRight();" id="right" type="submit" class="btn btn-warning">Right</button>
   			<button onclick="reset();" id="reset" type="submit" class="btn btn-danger">Reset</button>
+  			<!-- <button onclick="sound();" id="sound" type="submit" class="btn btn-danger">Sound</button> -->
 	</div>
 
-<table class="burns" border="1">
+<!-- THREE METHODS FOR CREATING GRIDS -->
+	<!-- METHOD 1: USE A FOR LOOP WITH WRITE METHODS -->
+<!-- ########################################################################################### -->
+<!-- 	function makeTable(rows, cols){
+  	document.write('<table class="burns">');
+  		for (var i = 0; i < rows; i++) {
+    		document.write('<tr>'); 
+      			for (var j = 0; j < cols; j++){
+        			document.write('<td class="cell" id="' + i.toString() + j.toString() + '"></td>');
+      			};
+    		document.write('</tr>');
+   		 };
+  	document.write('</table>');
+	};
+makeTable(9,9); -->
+
+<!-- ########################################################################################### -->
+	<!-- METHOD 2: USE createElement and table METHODS WITH FOR LOOP -->
+
+<div id="mytable">
+</div>
+
+<script type="text/javascript">
+
+function makeTable(rows, cols, gridClassName, cellClassName, containerId){
+	var grid = document.createElement('table');
+	grid.className = gridClassName;
+	document.getElementById(containerId).appendChild(grid);
+	for (var i = 0; i < rows; i++) {
+		var row = grid.insertRow(i);
+		for (var j = 0; j < cols; j++){
+			var cell = row.insertCell(j);
+			cell.className = cellClassName;
+			cell.setAttribute('id', i.toString() + j.toString());
+		};
+	;}
+};
+
+makeTable(9, 9, 'burns', 'cell', 'mytable');
+
+</script>
+
+<!-- ########################################################################################### -->
+	<!-- METHOD 3: THE HARD WAY -->
+
+<!-- <table class="burns" id="test" border="0">
 	<tr>
 		<td class="cell" id="00"></td>
 		<td class="cell" id="01"></td>
@@ -122,10 +168,11 @@
 		<td class="cell" id="87"></td>
 		<td class="cell" id="88"></td>
 	</tr>
-</table>
-	<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-	<script src="adventure.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</table> -->
+<!-- ########################################################################################### -->
 
+	<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="app.js"></script>
+	<script src="adventure.js"></script>
 </body>
