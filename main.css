@@ -17,5 +17,26 @@ td {
 
 .burns{
 	background-image: url("burns.jpg");
+	z-index: 0;
 }
 
+.charImg {
+	max-width: 75px;
+}
+
+.lebowski {
+	background-image: url("rug.jpg");
+	z-index: 0;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: all;
+
+}
+#abe {
+z-index: 99;
+}

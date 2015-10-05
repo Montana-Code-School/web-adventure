@@ -51,19 +51,21 @@ function Adventure(yCoord, xCoord, endX, endY, crangX, crangY) {
     this.xCoord = xCoord;
     this.endX = endX;
     this.endY = endY;
+    this.thing = new Character(this.name, this.xCoord)
+
     this.crangX = crangX;
     this.crangY = crangY;
     this.movAbe = function(){
         document.getElementById(this.yCoord.toString() + 
-            this.xCoord.toString()).innerHTML = "<img id=\"abe\" src=\"aberight.png\"></img>";
+            this.xCoord.toString()).innerHTML = "<img class=\"charImg\" id=\"abe\" src=\"aberight.png\"></img>";
     };
     this.target = function(){
         document.getElementById(this.endY.toString() + 
-            this.endX.toString()).innerHTML = "<img src=\"retire.png\"></img>";
+            this.endX.toString()).innerHTML = "<img class=\"charImg\" src=\"retire.png\"></img>";
     };
     this.killAbe = function(){
         document.getElementById(this.endY.toString() + 
-            this.endX.toString()).innerHTML = "<img src=\"dead.jpg\"></img>";
+            this.endX.toString()).innerHTML = "<img class=\"charImg\" src=\"dead.jpg\"></img>;"
     };
     this.hideAbe = function (xChange, yChange) {
         document.getElementById((this.yCoord + yChange).toString() + 
@@ -71,7 +73,7 @@ function Adventure(yCoord, xCoord, endX, endY, crangX, crangY) {
     };
     this.alienAttack = function (){
         document.getElementById(this.crangY.toString() + 
-            this.crangX.toString()).innerHTML = "<img src=\"krangkodos.png\"></img>";
+            this.crangX.toString()).innerHTML = "<img class=\"charImg\" src=\"krangkodos.png\"></img>";
     };
     
 }
@@ -129,23 +131,43 @@ function Character(name, xCoord, yCoord, pictures){
   // };
 
 
-var krang = new Character('Krang', 4, 4, ['krang.jpg', 'krangkodos.png']);
+//var krang = new Character('Krang', 4, 4, ['krang.jpg', 'krangkodos.png']);
 //LEVEL Instantiation #############################################################
 
 var adventure = new Adventure(0, 0, 8, 8, 4, 4);
 
+var table1 = new makeTable(12, 12, 'burns', 'cell', 'mytable');
+
 //MOVEMENT FUNCTION using 'adventure' instantiation above+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //ADD THIS AS A METHOD/PROTOYPE OF Adventure??? ++++++++
+
+function upDateCss(){
+  document.getElementById("table1").setAttribute('class', 'lebowski');
+}
 
 function mov(xDel, yDel, x, y, bound) {
     
     if(adventure.xCoord === (adventure.endX + xDel) && adventure.yCoord === (adventure.endY + yDel)) {
         adventure.xCoord += x;
         adventure.yCoord += y;
-        adventure.hideAbe(xDel, yDel);    
-        adventure.killAbe();
-        dead.play();
-        alert("Whuuthaa!!??");
+        adventure.hideAbe(xDel, yDel);
+        adventure.movAbe();
+        upDateCss();
+        // console.log("abes coords adjusted")   
+        // console.log("abemoved")
+        // dead.play();
+        // table1.gridClassName = 'lebowski';
+        // upDateCss();
+        // console.log(table1.gridClassName);
+        
+        
+        //document.getElementById('mytable') = document.setAttribute('id', 'histable');
+        // document.getElementById('mytable').className = 'hide';
+        // document.getElementById('histable').className = 'lebowski show';
+        // document.getElementById('abe').className = 'show';
+        
+       
+
     }
     else if (adventure.yCoord === bound && yDel != 0) {
         holdon.play();
@@ -194,7 +216,7 @@ function mov(xDel, yDel, x, y, bound) {
 //MOVEMENTS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function movDown() {
-    mov(0, -1, 0, 1, 8);
+    mov(0, -1, 0, 1, 11);
 }; 
 function movUp() {
     mov(0, 1, 0, -1, 0);
@@ -203,7 +225,7 @@ function movLeft() {
     mov(1, 0, -1, 0, 0);
 }; 
 function movRight() {
-    mov(-1, 0, 1, 0, 8);
+    mov(-1, 0, 1, 0, 11);
 };
 function reset() {
     adventure.hideAbe(0,0);
@@ -254,8 +276,8 @@ var spring = new Audio('jump.mp3');
 
 adventure.movAbe();
 adventure.target();
-krang.place();
-krang.move();
+//krang.place();
+//krang.move();
 
 function jump(){
   spring.play();
