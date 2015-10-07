@@ -5,8 +5,10 @@ var dead = new Audio('sounds/dead.wav');
 function Adventure(startX, startY, endX, endY, bound) {
 	this.coord = new Thing(startX, startY);
 	this.start = new Thing(startX, startY);
-	this.end = new Thing(endX, endY, this, this.endAction);
-    this.burns = new Thing(endX-1, endY-1, this, this.burnsAction);
+    this.stuff = [
+        new Thing(endX, endY, this, this.endAction, "retire.png"),
+        new Thing(endX-1, endY-1, this, this.burnsAction, "burns.jpg")
+    ];
 	this.bound = bound;
 	this.isGhost = false;
 }
@@ -29,12 +31,18 @@ Adventure.prototype.atPosition = function(xChange, yChange, position) {
     return this.coord.x + xChange === position.x && this.coord.y + yChange === position.y;
 };
 
+Adventure.prototype.moveStuff = function(xChange, yChange) {
+    for (var i = 0; i < this.stuff.length; i++) {
+        if(!this.isGhost && this.atPosition(xChange, yChange, this.stuff[i])) {
+            this.stuff[i].action(xChange, yChange);
+            return true;
+        }
+    }
+    return false;
+}
+
 Adventure.prototype.mov = function(xChange, yChange) {
-	if(!this.isGhost && this.atPosition(xChange, yChange, this.end)) {
-        this.end.action(xChange, yChange);
-	}
-    else if (!this.isGhost && this.atPosition(xChange, yChange, this.burns)) {
-        this.burns.action(xChange, yChange);
+    if (this.moveStuff(xChange, yChange)) {
     }
 	else if ((this.coord.x + xChange) < 0 || (this.coord.x + xChange) >= this.bound) {
         holdon.play();
@@ -52,34 +60,19 @@ Adventure.prototype.mov = function(xChange, yChange) {
 	};
 }
 
-Adventure.prototype.getID = function() {
-    return this.coord.x.toString() + this.coord.y.toString();
+Adventure.prototype.getID = function(thing) {
+    return thing.x.toString() + thing.y.toString();
 };
-
-Adventure.prototype.getIDEnd = function() {
-    return this.end.x.toString() + this.end.y.toString();
-};
-
-Adventure.prototype.getIDBurns = function() {
-    return this.burns.x.toString() + this.burns.y.toString();
-};
-
-
 
 //Adding a function to replace the winning cell with a picture of dead Abe Simpson
 Adventure.prototype.killAbe = function () {
-    document.getElementById(this.getID()).innerHTML = this.makeImageElement("dead.jpg");
+    document.getElementById(this.getID(coord)).innerHTML = this.makeImageElement("dead.jpg");
     this.isGhost = true;
 };
 
-Adventure.prototype.placeBurns = function() {
-    var imageElement = this.makeImageElement("burns.jpg");
-    document.getElementById(this.getIDBurns()).innerHTML = imageElement;
-};
-
-Adventure.prototype.placeEnd = function() {
-    var imageElement = this.makeImageElement("retire.png");
-    document.getElementById(this.getIDEnd()).innerHTML = imageElement;
+Adventure.prototype.place = function(thing) {
+    var imageElement = this.makeImageElement(thing.image);
+    document.getElementById(this.getID(thing)).innerHTML = imageElement;
 };
     
 Adventure.prototype.movAbe = function() {
@@ -88,7 +81,7 @@ Adventure.prototype.movAbe = function() {
     } else {
         imageElement = this.makeImageElement("small_abe.png");
     }
-    document.getElementById(this.getID()).innerHTML = imageElement;
+    document.getElementById(this.getID(this.coord)).innerHTML = imageElement;
 };
 
 Adventure.prototype.makeImageElement = function(image) {
@@ -97,7 +90,7 @@ Adventure.prototype.makeImageElement = function(image) {
 }
 
 Adventure.prototype.hideAbe = function () {
-    document.getElementById(this.getID()).innerHTML = "";
+    document.getElementById(this.getID(this.coord)).innerHTML = "";
 };
 
 Adventure.prototype.generateGrid = function() {
@@ -119,13 +112,15 @@ Adventure.prototype.reset = function() {
     this.coord.y = this.start.y;
     this.isGhost = false;
     this.movAbe();
-    this.placeEnd();
-    this.placeBurns();
+    for (var i = 0; i < this.stuff.length; i++) {
+        this.place(this.stuff[i]);
+    }
 }
 
-function Thing(x, y, adventure, action) {
+function Thing(x, y, adventure, action, image) {
     this.x = x;
     this.y = y;
     this.adventure = adventure;
     this.action = action;
+    this.image = image;
 }
