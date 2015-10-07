@@ -2,15 +2,13 @@ var holdon = new Audio('sounds/holdon.wav');
 var coon = new Audio('sounds/racoon.wav');
 var dead = new Audio('sounds/dead.wav');
 
-function Adventure(startX, startY, endX, endY, bound) {
+function Adventure(startX, startY, endX, endY, bound, id, stuff) {
 	this.coord = new Thing(startX, startY);
 	this.start = new Thing(startX, startY);
-    this.stuff = [
-        new Thing(endX, endY, this, this.endAction, "retire.png"),
-        new Thing(endX-1, endY-1, this, this.burnsAction, "burns.jpg")
-    ];
+    this.stuff = stuff;
 	this.bound = bound;
 	this.isGhost = false;
+    this.id = id;
 }
 
 Adventure.prototype.endAction = function(xChange, yChange) {
@@ -20,11 +18,16 @@ Adventure.prototype.endAction = function(xChange, yChange) {
     alert("Whuuthaa!!??");
     this.adventure.killAbe();
     dead.play();
+    this.isGhost = true;
 };
 
 Adventure.prototype.burnsAction = function(xChange, yChange) {
     alert("You're fired!");
     reset();
+}
+
+Adventure.prototype.portalAction = function(xChange, yChange) {
+    setup2("adventureScreen");
 }
 
 Adventure.prototype.atPosition = function(xChange, yChange, position) {
@@ -66,7 +69,7 @@ Adventure.prototype.getID = function(thing) {
 
 //Adding a function to replace the winning cell with a picture of dead Abe Simpson
 Adventure.prototype.killAbe = function () {
-    document.getElementById(this.getID(coord)).innerHTML = this.makeImageElement("dead.jpg");
+    document.getElementById(this.getID(this.coord)).innerHTML = this.makeImageElement("dead.jpg");
     this.isGhost = true;
 };
 
@@ -76,7 +79,7 @@ Adventure.prototype.place = function(thing) {
 };
     
 Adventure.prototype.movAbe = function() {
-    if (myAdventure.isGhost) {
+    if (this.isGhost) {
         imageElement = this.makeImageElement("ghost.png");
     } else {
         imageElement = this.makeImageElement("small_abe.png");
@@ -94,15 +97,17 @@ Adventure.prototype.hideAbe = function () {
 };
 
 Adventure.prototype.generateGrid = function() {
+    var tableContents = "";
     for (var row = 0; row < this.bound; row++) {
-        document.write("<tr class=\"row\">\n");
+        tableContents += "<tr class=\"row\">\n";
 
         for (var col = 0; col < this.bound; col++) {
-            document.write(" <td id=\"" + col + row + 
-                "\" class=\"cell\"></td>\n");
+            tableContents += " <td id=\"" + col + row + 
+                "\" class=\"cell\"></td>\n";
         }
-        document.write("</tr>");
+        tableContents += "</tr>";
     }
+    document.getElementById(this.id).innerHTML = tableContents;
     this.reset();
 };
 
