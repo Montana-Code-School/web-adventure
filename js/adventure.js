@@ -64,7 +64,7 @@ Adventure.prototype.mov = function(xChange, yChange) {
 }
 
 Adventure.prototype.getID = function(thing) {
-    return thing.x.toString() + thing.y.toString();
+    return thing.x.toString() + "-" + thing.y.toString();
 };
 
 //Adding a function to replace the winning cell with a picture of dead Abe Simpson
@@ -102,7 +102,7 @@ Adventure.prototype.generateGrid = function() {
         tableContents += "<tr class=\"row\">\n";
 
         for (var col = 0; col < this.bound; col++) {
-            tableContents += " <td id=\"" + col + row + 
+            tableContents += " <td id=\"" + col + "-" + row + 
                 "\" class=\"cell\"></td>\n";
         }
         tableContents += "</tr>";

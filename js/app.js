@@ -18,9 +18,6 @@ var movRight = function() {
 
 var setupBase = function(adventureID, endX, endY, adventureSize) {
     myAdventure = new Adventure(0, 0, endX, endY, adventureSize, adventureID);
-
-    //myAdventure2 = new Adventure(0, 0, adventureSize-1, adventureSize-1, adventureSize);
-    //myAdventure2.generateGrid();
 };
 
 var setup = function(adventureID) {
