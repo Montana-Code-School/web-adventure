@@ -20,6 +20,26 @@ var setupBase = function(adventureID, endX, endY, adventureSize) {
     myAdventure = new Adventure(0, 0, endX, endY, adventureSize, adventureID);
 };
 
+function loadGame(){
+    var locationToLoad;
+    $.get( "http://localhost:3000/api/location", function( data ) {
+        locationToLoad = data;
+        console.log(locationToLoad);
+    });
+}
+
+function saveGame(){
+    var locationToSave = this.myAdventure.coord;
+    console.log(locationToSave);
+    $.ajax({
+        url: "http://localhost:3000/api/location",
+        type: 'POST',
+        data: locationToSave
+    }).done(function(data){
+        console.log(data);
+    });
+}
+
 var setup = function(adventureID) {
     var adventureSize = Math.floor(5 + Math.random()*6);
     var endX = adventureSize-1;
@@ -28,7 +48,7 @@ var setup = function(adventureID) {
     myAdventure.stuff = 
         [
             new Thing(endX-1, endY-1, myAdventure, Adventure.prototype.burnsAction, "burns.jpg"),
-            new Thing(endX, endY, myAdventure, Adventure.prototype.portalAction, "portal.jpg")
+            new Thing(endX, endY, myAdventure, Adventure.prototype.portalAction, "portal.jpeg")
         ]
     myAdventure.generateGrid();
 
