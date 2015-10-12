@@ -48,7 +48,7 @@ var setup = function(adventureID) {
     myAdventure.stuff = 
         [
             new Thing(endX-1, endY-1, myAdventure, Adventure.prototype.burnsAction, "burns.jpg"),
-            new Thing(endX, endY, myAdventure, Adventure.prototype.portalAction, "portal.jpeg")
+            new Thing(endX, endY, myAdventure, Adventure.prototype.portalAction, "portal.jpg")
         ]
     myAdventure.generateGrid();
 
