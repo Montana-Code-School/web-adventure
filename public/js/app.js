@@ -1,5 +1,5 @@
-var myAdventure;
-var adventures = [];
+var myAdventure; // the current adventure
+var adventures = []; // the adventure array (all levels)
 
 var movDown = function() {
     myAdventure.mov(0, 1);
@@ -18,6 +18,7 @@ var movRight = function() {
 };
 
 function loadGame(){
+    console.log("loadGame() called!");
     var locationToLoad;
     $.get( "http://localhost:3000/api/location", function( data ) {
         locationToLoad = data;
@@ -79,37 +80,44 @@ function saveStuff(stuff) {
     return stuffList;
 }
 
+var portalAction = function(xChange, yChange) {
+    myAdventure = adventures[1];
+    myAdventure.generateGrid();
+}
+
 var setup = function() {
+    // first adventure level
     var endX = Math.floor(5 + Math.random()*6)-1;
     var endY = Math.floor(5 + Math.random()*6)-1;
     var adv = new Adventure(0, 0, endX, endY, "adventureScreen");
     adv.stuff = 
         [
-            new Thing("burns", endX-1, endY-1, adv, Adventure.prototype.burnsAction, "burns.jpg"),
-            new Thing("portal", endX, endY, adv, Adventure.prototype.portalAction, "portal.jpg")
+            new Thing("burns", endX-1, endY-1, Adventure.prototype.burnsAction, "burns.jpg"),
+            new Thing("portal", endX, endY, portalAction, "portal.jpg")
         ]
-    console.log("about to generate the grid " + endX + "," + endY);
     adv.generateGrid();
     adventures.push(adv);
     myAdventure = adv;
 
+    // generate second adventure level
     endX = Math.floor(5 + Math.random()*6)-1;
     endY = Math.floor(5 + Math.random()*6)-1;
     adv = new Adventure(0, 0, endX, endY, "adventureScreen");
     adv.stuff = 
         [
-            new Thing("retire", endX, endY, adv, Adventure.prototype.endAction, "retire.png"),
-            new Thing("burns", endX-1, endY-1, adv, Adventure.prototype.burnsAction, "burns.jpg"),
+            new Thing("retire", endX, endY, Adventure.prototype.endAction, "retire.png"),
+            new Thing("burns", endX-1, endY-1, Adventure.prototype.burnsAction, "burns.jpg"),
         ]
-    //adv.generateGrid();
     adventures.push(adv);
 };
 
 var reset = function() {
+    // pop up to the top level
     if (myAdventure != adventures[0]) {
         myAdventure.reset();
         myAdventure = adventures[0];
     }
+    myAdventure.reset();
     myAdventure.generateGrid();
 }
 

@@ -12,11 +12,11 @@ function Adventure(startX, startY, endX, endY, ident, stuff) {
 }
 
 Adventure.prototype.endAction = function(xChange, yChange) {
-    this.adventure.hideAbe();
-    this.adventure.coord.x += xChange;
-    this.adventure.coord.y += yChange;
+    this.hide(this.coord);
+    this.coord.x += xChange;
+    this.coord.y += yChange;
     alert("Whuuthaa!!??");
-    this.adventure.killAbe();
+    this.killAbe();
     dead.play();
     this.isGhost = true;
 };
@@ -38,7 +38,8 @@ Adventure.prototype.atPosition = function(xChange, yChange, position) {
 Adventure.prototype.moveStuff = function(xChange, yChange) {
     for (var i = 0; i < this.stuff.length; i++) {
         if(!this.isGhost && this.atPosition(xChange, yChange, this.stuff[i])) {
-            this.stuff[i].action(xChange, yChange);
+            // use Object.call to ensure "this" is the adventure object
+            this.stuff[i].action.call(this, xChange, yChange);
             return true;
         }
     }
@@ -57,7 +58,7 @@ Adventure.prototype.mov = function(xChange, yChange) {
         //alert("D'oh!!!");
     }
     else {
- 		this.hideAbe();
+ 		this.hide(this.coord);
         this.coord.x += xChange;
         this.coord.y += yChange;
 		this.movAbe();
@@ -94,8 +95,8 @@ Adventure.prototype.makeImageElement = function(image) {
         + image + "\"></img>";
 }
 
-Adventure.prototype.hideAbe = function () {
-    document.getElementById(this.getID(this.coord)).innerHTML = "";
+Adventure.prototype.hide = function (location) {
+    document.getElementById(this.getID(location)).innerHTML = "";
 };
 
 Adventure.prototype.generateGrid = function() {
@@ -115,7 +116,7 @@ Adventure.prototype.generateGrid = function() {
 };
 
 Adventure.prototype.reset = function() {
-    this.hideAbe();
+    this.hide(this.coord);
     this.coord.x = this.start.x;
     this.coord.y = this.start.y;
     this.isGhost = false;
@@ -125,11 +126,10 @@ Adventure.prototype.reset = function() {
     }
 }
 
-function Thing(kind, x, y, adventure, action, image) {
+function Thing(kind, x, y, action, image) {
     this.kind = kind;
     this.x = x;
     this.y = y;
-    this.adventure = adventure;
     this.action = action;
     this.image = image;
 }
