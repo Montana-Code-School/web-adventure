@@ -15,7 +15,8 @@ app.get('/', function(req, res){
 });
 
 app.get('/api/location', function(req, res) {
-	fs.readFile('location.json', function(err, data) {
+	var gameName = req.params.gameName;
+	fs.readFile(gameName + '.json', function(err, data) {
 		res.setHeader('Cache-Control', 'no-cache');
 		res.json(JSON.parse(data));
 	});
@@ -23,11 +24,12 @@ app.get('/api/location', function(req, res) {
 
 app.post('/api/location', function(req, res) {
 	var myData = req.body;
-	fs.writeFile('location.json', JSON.stringify(myData), function(err) {
+	fs.writeFile(myData.gameName + '.json', JSON.stringify(myData), function(err) {
 	    if(err) {
 	      console.log(err);
 	    } else {
-	      console.log(JSON.stringify(myData) + "saved as JSON saved to " + 'location.json');
+	      console.log(JSON.stringify(myData) + " saved to "
+	      	+ myData.gameName + '.json');
 	    }
 	}); 
 });

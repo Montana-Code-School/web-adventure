@@ -26,11 +26,6 @@ Adventure.prototype.burnsAction = function(xChange, yChange) {
     reset();
 }
 
-Adventure.prototype.portalAction = function(xChange, yChange) {
-    myAdventure = adventures[1];
-    myAdventure.generateGrid();
-}
-
 Adventure.prototype.atPosition = function(xChange, yChange, position) {
     return this.coord.x + xChange === position.x && this.coord.y + yChange === position.y;
 };
@@ -77,7 +72,6 @@ Adventure.prototype.killAbe = function () {
 
 Adventure.prototype.place = function(thing) {
     var imageElement = this.makeImageElement(thing.image);
-    console.log("place: " + thing.image + " at " + this.getID(thing));
     document.getElementById(this.getID(thing)).innerHTML = imageElement;
 };
     

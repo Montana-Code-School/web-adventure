@@ -18,9 +18,12 @@ var movRight = function() {
 };
 
 function loadGame(){
-    console.log("loadGame() called!");
+    var gameName = document.getElementById("game-name-text").value;
+    console.log("loadGame:" + gameName + " called!");
+    var urlWithParam = "http://localhost:3000/api/location/";
+    urlWithParam += "?gameName=" + gameName;
     var locationToLoad;
-    $.get( "http://localhost:3000/api/location", function( data ) {
+    $.get(urlWithParam, function( data ) {
         locationToLoad = data;
         console.log(locationToLoad);
     });
@@ -34,7 +37,7 @@ function saveGame(){
         alert("The game name must have only characters a-z, A-Z, 0-9, and _!");
     } else {
         var locationToSave = {
-            "game-name": gameName,
+            "gameName": gameName,
             "adventures": saveAdventures()
         };
         console.log(locationToSave);
