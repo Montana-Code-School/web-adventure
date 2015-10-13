@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/api/location', function(req, res) {
-	var gameName = req.params.gameName;
+	var gameName = req.query.gameName;
 	fs.readFile(gameName + '.json', function(err, data) {
 		res.setHeader('Cache-Control', 'no-cache');
 		res.json(JSON.parse(data));
