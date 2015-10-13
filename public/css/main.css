@@ -25,8 +25,13 @@ img {
 	margin-right: auto;
 }
 .btn {
+  margin: 20px;
+  height: 35px;
+  padding: 0px 10px 0px 10px;
+}
+.btn-dir {
   margin: 10px;
   height: 35px;
-  width: 50px;
+  width: 70px;
   padding: 0px;
 }

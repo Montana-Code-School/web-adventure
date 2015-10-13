@@ -12,13 +12,13 @@ app.use(express.static('public'));
 
 app.get('/', function(req, res){
 	res.readFile('index.html')
-})
+});
 
 app.get('/api/location', function(req, res) {
-  fs.readFile('location.json', function(err, data) {
-    res.setHeader('Cache-Control', 'no-cache');
-    res.json(JSON.parse(data));
-  });
+	fs.readFile('location.json', function(err, data) {
+		res.setHeader('Cache-Control', 'no-cache');
+		res.json(JSON.parse(data));
+	});
 });
 
 app.post('/api/location', function(req, res) {

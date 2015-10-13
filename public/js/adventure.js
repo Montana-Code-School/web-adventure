@@ -2,13 +2,13 @@ var holdon = new Audio('sounds/holdon.wav');
 var coon = new Audio('sounds/racoon.wav');
 var dead = new Audio('sounds/dead.wav');
 
-function Adventure(startX, startY, endX, endY, bound, id, stuff) {
-	this.coord = new Thing(startX, startY);
-	this.start = new Thing(startX, startY);
+function Adventure(startX, startY, endX, endY, ident, stuff) {
+	this.coord = new Thing("coord", startX, startY);
+	this.start = new Thing("start", startX, startY);
+    this.end = new Thing("end", endX, endY);
     this.stuff = stuff;
-	this.bound = bound;
 	this.isGhost = false;
-    this.id = id;
+    this.ident = ident;
 }
 
 Adventure.prototype.endAction = function(xChange, yChange) {
@@ -27,7 +27,8 @@ Adventure.prototype.burnsAction = function(xChange, yChange) {
 }
 
 Adventure.prototype.portalAction = function(xChange, yChange) {
-    setup2("adventureScreen");
+    myAdventure = adventures[1];
+    myAdventure.generateGrid();
 }
 
 Adventure.prototype.atPosition = function(xChange, yChange, position) {
@@ -47,13 +48,13 @@ Adventure.prototype.moveStuff = function(xChange, yChange) {
 Adventure.prototype.mov = function(xChange, yChange) {
     if (this.moveStuff(xChange, yChange)) {
     }
-	else if ((this.coord.x + xChange) < 0 || (this.coord.x + xChange) >= this.bound) {
+	else if ((this.coord.x + xChange) < 0 || (this.coord.x + xChange) > this.end.x) {
         holdon.play();
-        alert("D'oh!!!");
+        //alert("D'oh!!!");
     }
-    else if ((this.coord.y + yChange) < 0 || (this.coord.y + yChange) >= this.bound) {
+    else if ((this.coord.y + yChange) < 0 || (this.coord.y + yChange) > this.end.y) {
         coon.play();
-        alert("D'oh!!!");
+        //alert("D'oh!!!");
     }
     else {
  		this.hideAbe();
@@ -75,6 +76,7 @@ Adventure.prototype.killAbe = function () {
 
 Adventure.prototype.place = function(thing) {
     var imageElement = this.makeImageElement(thing.image);
+    console.log("place: " + thing.image + " at " + this.getID(thing));
     document.getElementById(this.getID(thing)).innerHTML = imageElement;
 };
     
@@ -98,16 +100,17 @@ Adventure.prototype.hideAbe = function () {
 
 Adventure.prototype.generateGrid = function() {
     var tableContents = "";
-    for (var row = 0; row < this.bound; row++) {
+    for (var row = 0; row <= this.end.y; row++) {
         tableContents += "<tr class=\"row\">\n";
 
-        for (var col = 0; col < this.bound; col++) {
+        for (var col = 0; col <= this.end.x; col++) {
             tableContents += " <td id=\"" + col + "-" + row + 
                 "\" class=\"cell\"></td>\n";
         }
         tableContents += "</tr>";
     }
-    document.getElementById(this.id).innerHTML = tableContents;
+    console.log("generated grid for " + this.ident);
+    document.getElementById(this.ident).innerHTML = tableContents;
     this.reset();
 };
 
@@ -122,7 +125,8 @@ Adventure.prototype.reset = function() {
     }
 }
 
-function Thing(x, y, adventure, action, image) {
+function Thing(kind, x, y, adventure, action, image) {
+    this.kind = kind;
     this.x = x;
     this.y = y;
     this.adventure = adventure;
